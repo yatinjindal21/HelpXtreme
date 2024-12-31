@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>Bootstrap demo</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+   <style>
+      .btn:hover {
+         box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.663);
+      }
+
+      .btn:active {
+         box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.515);
+      }
+   </style>
+
+   <script>
+
+      $(document).ready(function () {
+
+         //-------------- signup ==========================
+
+         $("#btnsignup").click(function () {
+            var email = $("#itxtemail").val();
+            var password = $("#itxtpassword").val();
+            var type = $("#itxttype").val();
+            var obj = {
+               type: "get",
+               url: "/chk-user",
+               data: {
+                  kuchEmail: email,
+                  kuchPwd: password,
+                  kuchType: type
+               }
+            }
+
+            $.ajax(obj).done(function (respKuch) {
+
+               $("#res").html(respKuch);
+               $("#signupmodal").modal("hide");
+               $("#signedmodal").modal("show");
+               setTimeout(function () {
+                  $("#signedmodal").modal("hide")
+               }, 1000);
+
+            }).fail(function (errKuch) {
+               //alert(errKuch);
+               $("#res").html(respKuch);
+            })
+         });
+
+         //---------------- email-check ======================
+
+         $("#itxtemail").keyup(function () {
+            var email = $(this).val();
+            var obj = {
+               type: "get",
+               url: "/chk-email",
+               data: {
+                  kuchEmail: email
+               }
+            }
+
+            $.ajax(obj).done(function (respKuch) {
+               // alert(respKuch);
+               $("#emailres").html(respKuch);
+
+               if (respKuch == "(Available)")
+                  $("#emailres").css("color", "green");
+               else
+                  $("#emailres").css("color", "red");
+            }).fail(function (errKuch) {
+               //alert(errKuch);
+               $("#emailres").html(errKuch);
+            })
+         });
+
+         //---------------- password show/hide ==================
+
+         var flag = true;
+         $("#eye").click(function () {
+            if (flag == true) {
+               $(".eyekuch").removeClass("fa-eye-slash").addClass("fa-eye");
+               $("#itxtpassword").attr("type", "text");
+               flag = false;
+            }
+
+            else {
+               $(".eyekuch").addClass("fa-eye-slash").removeClass("fa-eye");
+               $("#itxtpassword").attr("type", "password");
+               flag = true;
+            }
+         });
+
+         var flag2 = true;
+         $("#eye2").click(function () {
+            if (flag2 == true) {
+               $(".eyekuch2").removeClass("fa-eye-slash").addClass("fa-eye");
+               $("#iltxtpassword").attr("type", "text");
+               flag2 = false;
+            }
+
+            else {
+               $(".eyekuch2").addClass("fa-eye-slash").removeClass("fa-eye");
+               $("#iltxtpassword").attr("type", "password");
+               flag2 = true;
+            }
+         });
+
+         //------------------ login =======================
+
+         $("#btnlogin").click(function () {
+            var email = $("#iltxtemail").val();
+            var password = $("#iltxtpassword").val();
+            var obj = {
+               type: "get",
+               url: "/login-user",
+               data: {
+                  kuchEmail: email,
+                  kuchPwd: password
+               }
+            }
+
+            $.ajax(obj).done(function (respKuch) {
+
+               if (respKuch == "(Invalid User-ID)") {
+                  $("#loginemailres").html(respKuch);
+                  $("#loginpwdres").html("*");
+                  $("#lres").html("");
+               }
+               else if (respKuch == "(Incorrect Password)") {
+                  $("#loginpwdres").html(respKuch);
+                  $("#loginemailres").html("*");
+                  $("#lres").html("");
+               }
+               else {
+                  localStorage.setItem("activekuch", $("#iltxtemail").val());
+
+                  $("#loginmodal").modal("hide");
+
+                  if (respKuch == "Donor") {
+                     localStorage.setItem("myValue", "1");
+                     location.href = "dash-donor.html";
+                  }
+                  else if (respKuch == "Needy") {
+                     localStorage.setItem("myValue", "1");
+                     location.href = "dash-needy.html";
+                  }
+
+               }
+            }).fail(function (errKuch) {
+               //alert(errKuch);
+               $("#lres").html(errKuch);
+            })
+         });
+
+         function preventBack() { window.history.forward(); }
+         setTimeout("preventBack()", 0);
+         window.onunload = function () { null };
+         preventBack();
+      });
+   </script>
+</head>
+<!-- ========================================================================================================================== -->
+
+<body>
+
+   <nav class="navbar navbar-expand-lg bg-gradient fixed-top"
+      style="background-color:cadetblue; box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.607);">
+      <div class="container-fluid">
+         <a class="navbar-brand ms-4" style="color: #0d0b37; font-size: 20px;">
+            <span class="fa-stack">
+               <i class="fa-solid fa-shield fa-stack-2x" style="color: #021050;"></i>
+               <i class="fa-solid fa-prescription fa-stack-1x" style="color: #ff0000;"></i>
+            </span>
+            &nbsp;&nbsp;<b>Heal<font color="#ff0000">X</font>treme</b></a>
+         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <button class="btn offset-md-10 me-2 bg-gradient"
+               style="background-color: cadetblue; color: #0d0b37; border-color: #0d0b37; border-width: 3px;"
+               type="button" data-bs-toggle="modal" data-bs-target="#signupmodal"><b>Signup</b></button>
+            <button class="btn bg-gradient"
+               style="background-color: cadetblue; color: #0d0b37; border-color: #0d0b37; border-width: 3px;"
+               type="button" data-bs-toggle="modal" data-bs-target="#loginmodal"><b>Login</b></button>
+         </div>
+      </div>
+   </nav>
+   <br><br><br>
+   <div class="container">
+      <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+         <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="3000">
+               <img src="pics/Donate+Banner.png" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+               <img src="pics/EAP-PERSONALISED-MEDICINE-Site internet.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+               <img src="pics/6b7994c7826f4b69b8b43affd7eadd21.png" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+               <img src="pics/charity_water_pouring.jpg" class="d-block w-100" alt="...">
+            </div>
+         </div>
+         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+         </button>
+         <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+         </button>
+      </div>
+      <br>
+      <div class="row bg-gradient" style="background-color: darkslategray; box-shadow: 0px 3px 15px black;">
+         <center>
+            <h4 style="color: white;">Our Services</h4>
+         </center>
+      </div>
+      <br>
+      <div class="row">
+         <div class="col-sm-3 mb-3 mb-sm-0">
+            <div class="card bg-gradient" style="box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.514);">
+               <center>
+                  <img src=" pics/hp-donation.jpg" class="card-img-top" alt="..."
+                     style="box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.481);">
+                  <div class="card-body">
+                     <h5 class="card-title">Donate Medicines</h5>
+                     <p class="card-text">Connecting hearts, one medicine at a time - Our platform enables you to donate
+                        medicines and change lives with a simple act of kindness</p>
+               </center>
+            </div>
+         </div>
+
+         <div class="col-sm-3 mb-3 mb-sm-0">
+            <div class="card bg-gradient" style="box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.514);">
+               <center>
+                  <img src="pics/istockphoto-1319646335-612x612.jpg" class="card-img-top" alt="..."
+                     style="box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.481);">
+                  <div class="card-body">
+                     <h5 class="card-title">Help the Needy</h5>
+                     <p class="card-text">Be a healing hand - Empower the less fortunate with life-changing medicine
+                        donations and create a healthier, happier world, together</p>
+               </center>
+            </div>
+         </div>
+
+         <div class="col-sm-3 mb-3 mb-sm-0">
+            <div class="card bg-gradient" style="box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.514);">
+               <center>
+                  <img src="pics/non-profitable.jpg" class="card-img-top" alt="..."
+                     style="box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.481);">
+                  <div class="card-body">
+                     <h5 class="card-title">Non-Profitable</h5>
+                     <p class="card-text">Making a difference, transforming lives without profit - Join our
+                        non-profit
+                        platform to help the
+                        needy with essential medicines</p>
+               </center>
+            </div>
+         </div>
+
+
+         <div class="col-sm-3 mb-3 mb-sm-0">
+            <div class="card bg-gradient" style="box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.514);">
+               <center>
+                  <img src="pics/terms-and-conditions.jpg" class="card-img-top" alt="..."
+                     style="box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.481);">
+                  <div class="card-body">
+                     <h5 class="card-title">Terms and Conditions</h5>
+                     <p class="card-text">By using our website, you agree with the following
+                        terms and conditions</p>
+                     <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#tncmodal">Show</button>
+               </center>
+            </div>
+         </div>
+      </div>
+      <br>
+      <div class="row bg-gradient" style="background-color: darkslategray; box-shadow: 0px 3px 15px black;">
+         <center>
+            <h4 style="color: white;">About Us</h4>
+         </center>
+      </div>
+      <br>
+      <div class="row">
+         <div class="col-md-6 border border-4" style="box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.414);">
+            <div class="row">
+               <div class="col-md-4">
+                  <br>
+                  <center>
+                     <img class="rounded-circle" src="pics/profile-pic-project.jpg" alt=""
+                        style="width: 130px; height: 130px;">
+                  </center>
+                  <br>
+               </div>
+               <div class="col-md-8">
+                  <br>
+                  <h4>Developed By-</h4>
+                  <b>Name: </b>Yatin Jindal
+                  <br>
+                  <b>Email: </b>jindalyatin2109@gmail.com
+                  <br>
+                  <b>College: </b>Thapar University, Patiala
+                  <br>
+                  <b>Branch: </b>COE, 1st Year
+                  <br><br>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-6 border border-4" style="box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.414);">
+            <div class="row">
+               <div class="col-md-4">
+                  <br>
+                  <center>
+                     <img class="rounded-circle" src="pics/350803526_1320625172215863_1097609258451338610_n.jpg" alt=""
+                        style="width: 130px; height: 130px;">
+                  </center>
+                  <br>
+               </div>
+               <div class="col-md-8">
+                  <br>
+                  <h4>Under the Guidance of-</h4>
+                  <b>Name: </b>Rajesh K. Bansal <br> <u><b>(Author of Real Java)</b></u>
+                  <br>
+                  <b>Founder of: </b>Banglore Computer Education, Bathinda
+                  <br>
+                  <b>Contact No.: </b>98722-46056
+                  <br><br>
+               </div>
+            </div>
+         </div>
+      </div>
+      <br>
+      <div class="row bg-gradient" style="background-color: darkslategray; box-shadow: 0px 3px 15px black;">
+         <center>
+            <h4 style="color: white;">Reach Us</h4>
+         </center>
+      </div>
+      <br>
+      <div class="row">
+         <div class="col-md-6">
+            <center>
+               <iframe class="border border-5"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3550.395094115197!2d76.36212627568646!3d30.356424174767938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391028ab86533db5%3A0x93cc1f72eae1c9a8!2sThapar%20Institute%20of%20Engineering%20%26%20Technology%20(TIET)%2C%20Patiala!5e1!3m2!1sen!2sin!4v1690089657521!5m2!1sen!2sin"
+                  width="600" height="450" style="border:0; box-shadow: 0px 0px 15px 5px;" allowfullscreen=""
+                  loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </center>
+         </div>
+         <div class="col-md-6">
+            <br>
+            <hr size="5" color="355D56"><br>
+            <div class="row">
+               <div class="col-md-1 offset-md-2">
+                  <i class="fa-regular fa-envelope fa-beat-fade fa-3x" style="color: #b80000;"></i>
+               </div>
+               <div class="col-md-8 mt-2">
+                  <span class="offset-md-1" style="font-size: 20px;"><b>HealXtreme@gmail.com</b></span>
+               </div>
+            </div>
+            <br>
+            <div class="row">
+               <div class="col-md-1 offset-md-2">
+                  <i class="fa-brands fa-facebook fa-beat-fade fa-3x offset-md-2" style="color: #2562cb;"></i>
+               </div>
+               <div class="col-md-8 mt-2">
+                  <span class="offset-md-1" style="font-size: 20px;"><b>HealXtreme Connect</b></span>
+               </div>
+            </div>
+            <br>
+            <div class="row">
+               <div class="col-md-1 offset-md-2">
+                  <i class="fa-brands fa-instagram fa-beat-fade fa-3x offset-md-2" style="color: #d92665;"></i>
+               </div>
+               <div class="col-md-8 mt-2">
+                  <span class="offset-md-1" style="font-size: 20px;"><b>#HealXtreme</b></span>
+               </div>
+            </div>
+            <br>
+            <div class="row">
+               <div class="col-md-1 offset-md-2">
+                  <i class="fa-brands fa-twitter fa-beat-fade fa-3x offset-md-2" style="color: #179bee;"></i>
+               </div>
+               <div class="col-md-8 mt-2">
+                  <span class="offset-md-1" style="font-size: 20px;"><b>Heal_X_treme</b></span>
+               </div>
+            </div>
+            <br><br>
+            <marquee class="bg-gradient text-light" style="background-color: darkslategray;">Follow Us<i
+                  class="fa-brands fa-facebook-f ms-3" style="color: #ffffff;"></i><i
+                  class="fa-brands fa-instagram ms-2" style="color: #ffffff;"></i></marquee>
+         </div>
+      </div>
+      <br><br>
+   </div>
+
+   <!-- ----------------Modal signup----------------------->
+
+   <div class="modal fade" id="signupmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-content" style="box-shadow: 0px 0px 25px 10px rgba(0, 0, 0, 0.205);">
+            <div class="modal-header bg-gradient">
+               <h1 class="modal-title fs-5" id="staticBackdropLabel">Sign-Up<i class="fa-solid fa-key ms-3"
+                     style="color: #000000;"></i></h1>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <form>
+                  <div class="d-flex justify-content-center m-2">
+                     <i class="fa-solid fa-user-plus fa-3x" style="color:rgb(72, 119, 121)"></i>
+                  </div>
+                  <div class="mb-3">
+                     <label for="exampleInputEmail1" class="form-label">Email-ID</label>
+                     <span id="emailres" style="color: red;">*</span>
+                     <input type="email" class="form-control" id="itxtemail" name="ntxtemail"
+                        placeholder="Enter the email adderss" aria-describedby="emailHelp"
+                        style="box-shadow: inset 0px 0px 5px 5px rgba(95, 158, 160, 0.637);">
+                  </div>
+                  <div class="mb-3">
+                     <label for="exampleInputPassword1" class="form-label">Password</label>
+                     <div class="row">
+                        <div class="col-md-10 input-group">
+                           <input type="password" class="form-control" id="itxtpassword" name="ntxtpassword"
+                              placeholder="Enter the password"
+                              style="box-shadow: inset 0px 0px 5px 5px rgba(95, 158, 160, 0.637);">
+                           <button class="btn btn-light" type="button" id="eye"
+                              style="box-shadow: inset 0px 0px 5px 5px rgba(95, 158, 160, 0.637);"><i
+                                 class="eyekuch fa-solid fa-eye-slash mt-2" style="color: #000000;"></i></button>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="mb-3">
+                     <label for="type" class="form-label">Type</label><br>
+                     <select class="form-select" name="ntxttype" id="itxttype"
+                        style="width: 250px; box-shadow: inset 0px 0px 5px 5px rgba(95, 158, 160, 0.637);">
+                        <option disabled selected>Choose...</option>
+                        <option>Donor</option>
+                        <option>Needy</option>
+                     </select>
+                     </datalist>
+                  </div>
+               </form>
+            </div>
+            <div class="modal-footer">
+               <span id="res" class="text-light"></span>
+               <button type="button" id="btnsignup" class="btn text-light bg-gradient"
+                  style="background-color: rgb(72, 119, 121);">Sign-up</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!------------------------- Signed up ---------------------------->
+
+   <div class="modal fade" id="signedmodal" tabindex="-1" aria-labelledby="exampleBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog" style="width: fit-content">
+         <div class="modal-content opacity-75" style="box-shadow: 0px 0px 25px 10px rgba(0, 0, 0, 0.205);">
+            <div class="modal-body">
+               <center>
+                  <b>Signed-Up Succesfullly...</b>
+               </center>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- ---------------Modal login-------------------------->
+
+   <div class="modal fade" id="loginmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-content" style="box-shadow: 0px 0px 25px 10px rgba(0, 0, 0, 0.205);">
+            <div class="modal-header bg-gradient">
+               <h1 class="modal-title fs-5" id="staticBackdropLabel">Login<i class="fa-solid fa-key ms-3"
+                     style="color: #000000;"></i></h1>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <form>
+                  <div class="d-flex justify-content-center m-2">
+                     <i class="fa-solid fa-user-check fa-3x" style="color: rgb(72, 119, 121);"></i>
+                  </div>
+                  <div class="mb-3">
+                     <label for="exampleInputEmail1" class="form-label">Email-ID</label>
+                     <span id="loginemailres" style="color: red;">*</span>
+                     <input type="email" class="form-control" id="iltxtemail" name="nltxtemail"
+                        placeholder="Enter your email adderss" aria-describedby="emailHelp"
+                        style="box-shadow: inset 0px 0px 5px 5px rgba(95, 158, 160, 0.637);">
+                  </div>
+                  <div class="mb-3">
+                     <label for="exampleInputPassword1" class="form-label">Password</label>
+                     <span id="loginpwdres" style="color: red;">*</span>
+                     <div class="row">
+                        <div class="col-md-10 input-group">
+                           <input type="password" class="form-control" id="iltxtpassword" name="nltxtpassword"
+                              placeholder="Enter your password"
+                              style="box-shadow: inset 0px 0px 5px 5px rgba(95, 158, 160, 0.637);">
+                           <button class="btn btn-light" type="button" id="eye2"
+                              style="box-shadow: inset 0px 0px 5px 5px rgba(95, 158, 160, 0.637);"><i
+                                 class="eyekuch2 fa-solid fa-eye-slash mt-2" style="color: #000000;"></i></button>
+                        </div>
+                     </div>
+                  </div>
+               </form>
+            </div>
+            <div class="modal-footer">
+               <span id="lres" class="text-light">*</span>
+               <button type="button" id="btnlogin" class="btn text-light bg-gradient"
+                  style="background-color: rgb(72, 119, 121);">Login</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!------------------------ modal T & C ----------------------------------->
+
+   <div class="modal fade" tabindex="-1" id="tncmodal">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+         <div class="modal-content" style="box-shadow: 0px 0px 25px 5px rgba(0, 0, 0, 0.533);">
+            <div class="modal-header">
+               <h5 class="modal-title">Terms and Conditions</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <p>
+                  <b>1. Eligibility:</b> Users must be of legal age in their respective jurisdiction to access and
+                  use the
+                  website. By using the website, you affirm that you are of legal age.
+               </p>
+               <p>
+                  <b>2. Donation Purpose:</b> Our platform facilitates medicine donations to support charitable
+                  causes only.
+                  Donated medicines are intended for those in need and not for resale or any commercial purpose.
+               </p>
+               <p>
+                  <b>3. No Medical Advice:</b> The information provided on the website is for general
+                  informational
+                  purposes
+                  only and should not be considered as medical advice. Always consult a qualified healthcare
+                  professional before making medical decisions.
+               </p>
+               <p>
+                  <b>4. Privacy Policy:</b> We value your privacy and have a dedicated Privacy Policy outlining
+                  how
+                  we collect,
+                  use, and protect your personal information. By using the website, you agree to our Privacy
+                  Policy.
+               </p>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"></script>
+</body>
+
+</html>

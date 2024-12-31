@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <script src="script/angular.min.js"></script>
+   <script>
+      var module = angular.module("myModule", []);
+      module.controller("myController", function ($scope, $http) {
+         $scope.v1;
+         $scope.v2;
+
+         $scope.dosum=function() {
+            $scope.total = parseFloat($scope.v1) + parseFloat($scope.v2);
+         }
+      })
+   </script>
+</head>
+
+<body ng-app="myModule" ng-controller="myController">
+   <center>
+      value 1:
+      <input type="text" ng-model="v1">
+      <br><br>
+      value 2:
+      <input type="text" ng-model="v2">
+      <br><br>
+      <button ng-click="dosum();">sum</button>
+      <br><br>
+      Total: {{total}}
+   </center>
+
+</body>
+
+</html>

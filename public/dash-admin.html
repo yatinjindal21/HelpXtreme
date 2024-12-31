@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>Bootstrap demo</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="stylesheet" href="style/animate.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+   <style>
+      .card {
+         box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.671);
+      }
+
+      .card:hover {
+         box-shadow: 0px 0px 15px 10px rgba(0, 0, 0, 0.671);
+      }
+
+      .btn:hover {
+         box-shadow: 0px 2px 5px black;
+      }
+
+      .btn:active {
+         box-shadow: inset 0px 1px 2px black;
+      }
+   </style>
+</head>
+
+<body>
+   <nav class="navbar bg-gradient fixed-top"
+      style="background-color:cadetblue; box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.607);">
+      <div class="container-fluid">
+         <a class="navbar-brand ms-4" style="color: #0d0b37; font-size: 20px;">
+            <span class="fa-stack">
+               <i class="fa-solid fa-shield fa-stack-2x" style="color: #021050;"></i>
+               <i class="fa-solid fa-prescription fa-stack-1x" style="color: #ff0000;"></i>
+            </span>
+            &nbsp;&nbsp;<b>Heal<font color="#ff0000">X</font>treme</b></a>
+      </div>
+   </nav>
+   <br><br><br><br><br><br>
+   <form method="post">
+      <div class="container">
+         <div class="row">
+            <div class="col-sm-4 mb-3 mb-sm-0">
+               <div class="card">
+                  <center>
+                     <img src="pics/all-users-icon.jpg" class="card-img-top" alt="...">
+                     <div class="card-body">
+                        <a href="panel-users.html" class="btn btn-primary btn-lg" style="width: 150px;">All Users</a>
+                     </div>
+                  </center>
+               </div>
+            </div>
+
+            <div class="col-sm-4 mb-3 mb-sm-0">
+               <div class="card">
+                  <center>
+                     <img src="pics/donor-icon.jpg" class="card-img-top" alt="...">
+                     <div class="card-body">
+                        <a href="panel-donors.html" class="btn btn-success btn-lg" style="width: 150px;">All Donors</a>
+                     </div>
+                  </center>
+               </div>
+            </div>
+
+            <div class="col-sm-4 mb-3 mb-sm-0">
+               <div class="card">
+                  <center>
+                     <img src="pics/neeedy-icon.jpg" class="card-img-top" alt="...">
+                     <div class="card-body">
+                        <a href="panel-needys.html" class="btn btn-danger btn-lg" style="width: 150px;">All Needy</a>
+                     </div>
+                  </center>
+               </div>
+            </div>
+         </div>
+   </form>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"></script>
+</body>
+
+</html>
